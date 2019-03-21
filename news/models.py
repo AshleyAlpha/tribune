@@ -32,6 +32,12 @@ class Article(models.Model):
     article_image = models.ImageField(upload_to = 'articles/')
 
     @classmethod
+    def todays_news(cls):
+        today = dt.date.today()
+        news = cls.objects.filter(pub_date__date = today)
+        return news
+
+    @classmethod
     def days_news(cls,date):
         news = cls.objects.filter(pub_date__date = date)
         return news
@@ -41,8 +47,6 @@ class Article(models.Model):
         news = cls.objects.filter(title__icontains=search_term)
         return news
 
-# try:
-#     editor = Editor.objects.get(email = 'example@gmail.com')
-#     print('Editor found')
-# except DoesNotExist:
-#     print('Editor was not found')
+class NewsLetterRecipients(models.Model):
+    name = models.CharField(max_length = 30)
+    email = models.EmailField()
